@@ -6,7 +6,7 @@ from .forms import CustomUserCreationForm, CustomAuthenticationForm
 
 
 def index(request):
-    return render(request, "index.html")
+    return render(request, 'querygenerator/index.html')
 
 
 def user_register(request):
@@ -22,7 +22,7 @@ def user_register(request):
     else:
         form = CustomUserCreationForm()
     
-    return render(request, 'register.html', {
+    return render(request, 'querygenerator/register.html', {
         'form': form,
     })
 
@@ -40,7 +40,7 @@ def user_login(request):
     else:
         form = CustomAuthenticationForm()
     
-    return render(request, 'login.html', {
+    return render(request, 'querygenerator/login.html', {
         'form': form,
     })
 
