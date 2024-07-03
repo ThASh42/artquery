@@ -32,6 +32,7 @@ class FormAuthenticationTestCase(TestCase):
             Password can’t be a commonly used password.
             Password can’t be entirely numeric.
             Two password fields must match.
+            Username and email must not be long
         '''
         def assert_wrong_registration_data(data: dict) -> None:
             form = CustomUserCreationForm(data)
@@ -68,6 +69,12 @@ class FormAuthenticationTestCase(TestCase):
                     'password1': 'test_the_passwrd1052',
                     'password2': 'test_a_passwrd9999',
             },
+            { # Values must not be long
+                    'username': 'testuser'*150,
+                    'email': 'testuser@gmail.com'*150,
+                    'password1': 'test_password193'*150,
+                    'password2': 'test_password193'*150,
+            },
         ]
         for case in test_cases:
             assert_wrong_registration_data(case)
@@ -87,10 +94,12 @@ class FormAuthenticationTestCase(TestCase):
     def test_user_login_form_invalid_data(self):
         '''
             Values must be case-sensitive
+            Username must not be long
         '''
         def assert_wrong_login_data(data: dict) -> None:
             form = CustomAuthenticationForm(data)
             self.assertFalse(form.is_valid())
+        
         test_cases = [
             { # Check upper case sensitivity (uppercase)
                 'username': self.client_username.upper(),
@@ -99,6 +108,10 @@ class FormAuthenticationTestCase(TestCase):
             { # Check upper case sensitivity (lowercase)
                 'username': self.client_username.lower(),
                 'password': self.client_password.lower(),
+            },
+            { # Username must not be long
+                'username': self.client_username * 100,
+                'password': self.client_password * 100,
             },
         ]
         for case in test_cases:
