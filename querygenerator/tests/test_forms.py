@@ -3,18 +3,8 @@ from querygenerator.forms import CustomUserCreationForm, CustomAuthenticationFor
 from django.contrib.auth import get_user_model
 
 
-class FormAuthenticationTestCase(TestCase):
+class FormRegistrationTestCase(TestCase):
     def setUp(self) -> None:
-        ''' Username and password must be titled to check case sensitivity in further tests '''
-        self.client_username = 'clientuser'.title()
-        self.client_email = 'client@gmail.com'
-        self.client_password = 'clientpassword123'.title()
-        self.client_data = {
-            'username': self.client_username,
-            'email': self.client_email,
-            'password': self.client_password,
-        }
-        self.client = get_user_model().objects.create_user(**self.client_data)
         return super().setUp()
 
     def test_user_registration_form_valid_data(self):
@@ -25,7 +15,7 @@ class FormAuthenticationTestCase(TestCase):
             'password2': 'test_password193',
         })
         self.assertTrue(form.is_valid())
-    
+
     def test_user_registration_form_invalid_data(self):
         STRING_MULTIPLIER: int = 50
         assert isinstance(STRING_MULTIPLIER, int)
@@ -117,13 +107,28 @@ class FormAuthenticationTestCase(TestCase):
         form = CustomUserCreationForm(data={})
         self.assertFalse(form.is_valid())
 
+
+class FormLoginTestCase(TestCase):
+    def setUp(self) -> None:
+        ''' Username and password must be titled to check case sensitivity in further tests '''
+        self.client_username = 'clientuser'.title()
+        self.client_email = 'client@gmail.com'
+        self.client_password = 'clientpassword123'.title()
+        self.client_data = {
+            'username': self.client_username,
+            'email': self.client_email,
+            'password': self.client_password,
+        }
+        self.client = get_user_model().objects.create_user(**self.client_data)
+        return super().setUp()
+
     def test_user_login_form_valid_data(self):
         form = CustomAuthenticationForm(data={
             'username': self.client_username,
             'password': self.client_password,
         })
         self.assertTrue(form.is_valid())
-    
+
     def test_user_login_form_invalid_data(self):
         DEFAULT_LOGIN_ERROR_MESSAGE = 'Please enter a correct username and password. Note that both fields may be case-sensitive.'
         STRING_MULTIPLIER: int = 100
@@ -143,7 +148,7 @@ class FormAuthenticationTestCase(TestCase):
                     self.assertIn(error, case['error_messages'])
                     case['error_messages'].remove(error)
             self.assertFalse(case['error_messages'])
-        
+
         test_cases = [
             { # Check upper case sensitivity (uppercase)
                 'data': {
