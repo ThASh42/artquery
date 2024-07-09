@@ -111,9 +111,9 @@ class FormRegistrationTestCase(TestCase):
 class FormLoginTestCase(TestCase):
     def setUp(self) -> None:
         ''' Username and password must be titled to check case sensitivity in further tests '''
-        self.client_username = 'clientuser'.title()
+        self.client_username = 'clientuser'.lower().title()
         self.client_email = 'client@gmail.com'
-        self.client_password = 'clientpassword123'.title()
+        self.client_password = 'clientpassword123'.lower().title()
         self.client_data = {
             'username': self.client_username,
             'email': self.client_email,
@@ -150,16 +150,30 @@ class FormLoginTestCase(TestCase):
             self.assertFalse(case['error_messages'])
 
         test_cases = [
-            { # Check upper case sensitivity (uppercase)
+            { # Check username upper case sensitivity (uppercase)
                 'data': {
                     'username': self.client_username.upper(),
+                    'password': self.client_password,
+                },
+                'error_messages': [DEFAULT_LOGIN_ERROR_MESSAGE],
+            },
+            { # Check password upper case sensitivity (uppercase)
+                'data': {
+                    'username': self.client_username,
                     'password': self.client_password.upper(),
                 },
                 'error_messages': [DEFAULT_LOGIN_ERROR_MESSAGE],
             },
-            { # Check upper case sensitivity (lowercase)
+            { # Check username upper case sensitivity (lowercase)
                 'data': {
                     'username': self.client_username.lower(),
+                    'password': self.client_password,
+                },
+                'error_messages': [DEFAULT_LOGIN_ERROR_MESSAGE],
+            },
+            { # Check password upper case sensitivity (lowercase)
+                'data': {
+                    'username': self.client_username,
                     'password': self.client_password.lower(),
                 },
                 'error_messages': [DEFAULT_LOGIN_ERROR_MESSAGE],
