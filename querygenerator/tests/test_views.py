@@ -2,7 +2,7 @@ from django.test import TestCase, Client
 from django.urls import reverse
 from django.contrib.auth import get_user_model
 
-class AnonimousUserTestCase(TestCase):
+class AnonymousUserTestCase(TestCase):
     def setUp(self) -> None:
         self.client = Client()
         return super().setUp()
@@ -26,7 +26,7 @@ class AnonimousUserTestCase(TestCase):
         self.assertTemplateUsed(response, 'querygenerator/login.html')
 
 
-class AuthenticatedUserTestCase(TestCase):
+class AuthenticatedUserTestCase(AnonymousUserTestCase):
     def setUp(self) -> None:
         self.client_username = 'clientuser'
         self.client_email = 'client@gmail.com'
@@ -38,21 +38,3 @@ class AuthenticatedUserTestCase(TestCase):
         }
         self.user = get_user_model().objects.create_user(**self.client_data)
         self.client.login(**self.client_data)
-
-    def test_index_view(self):
-        url =  reverse('querygenerator:index')
-        response = self.client.get(url)
-        self.assertEqual(200, response.status_code)
-        self.assertTemplateUsed(response, 'querygenerator/index.html')
-
-    def test_register_view(self):
-        url =  reverse('querygenerator:register')
-        response = self.client.get(url)
-        self.assertEqual(200, response.status_code)
-        self.assertTemplateUsed(response, 'querygenerator/register.html')
-
-    def test_login_view(self):
-        url =  reverse('querygenerator:login')
-        response = self.client.get(url)
-        self.assertEqual(200, response.status_code)
-        self.assertTemplateUsed(response, 'querygenerator/login.html')
