@@ -8,22 +8,27 @@ class AnonymousUserTestCase(TestCase):
         return super().setUp()
 
     def test_index_view(self):
-        url =  reverse('querygenerator:index')
+        url = reverse('querygenerator:index')
         response = self.client.get(url)
         self.assertEqual(200, response.status_code)
         self.assertTemplateUsed(response, 'querygenerator/index.html')
 
     def test_register_view(self):
-        url =  reverse('querygenerator:register')
+        url = reverse('querygenerator:register')
         response = self.client.get(url)
         self.assertEqual(200, response.status_code)
         self.assertTemplateUsed(response, 'querygenerator/register.html')
 
     def test_login_view(self):
-        url =  reverse('querygenerator:login')
+        url = reverse('querygenerator:login')
         response = self.client.get(url)
         self.assertEqual(200, response.status_code)
         self.assertTemplateUsed(response, 'querygenerator/login.html')
+    
+    def test_logout_view(self):
+        url = reverse('querygenerator:logout')
+        response = self.client.get(url)
+        self.assertEqual(302, response.status_code)
 
 
 class AuthenticatedUserTestCase(AnonymousUserTestCase):
