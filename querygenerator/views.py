@@ -45,7 +45,7 @@ def user_login(request):
     })
 
 
-@login_required
 def user_logout(request):
-    logout(request)
+    if request.user.is_authenticated:
+        logout(request)
     return redirect('querygenerator:login')
