@@ -29,6 +29,7 @@ class AnonymousUserTestCase(TestCase):
         url = reverse('querygenerator:logout')
         response = self.client.get(url)
         self.assertEqual(302, response.status_code)
+        self.assertRedirects(response, reverse('querygenerator:login'))
     
     def test_register_view_POST_blank_data(self):
         url = reverse('querygenerator:register')
@@ -54,6 +55,7 @@ class AnonymousUserTestCase(TestCase):
             'password2': 'test_password193',
         })
         self.assertEqual(302, response.status_code)
+        self.assertRedirects(response, reverse('querygenerator:index'))
 
     def test_login_view_POST_blank_data(self):
         url = reverse('querygenerator:login')
@@ -85,6 +87,7 @@ class AnonymousUserTestCase(TestCase):
             'password': client_password,
         })
         self.assertEqual(302, response.status_code)
+        self.assertRedirects(response, reverse('querygenerator:index'))
 
 
 class AuthenticatedUserTestCase(AnonymousUserTestCase):
