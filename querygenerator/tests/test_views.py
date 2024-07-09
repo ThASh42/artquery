@@ -29,8 +29,31 @@ class AnonymousUserTestCase(TestCase):
         url = reverse('querygenerator:logout')
         response = self.client.get(url)
         self.assertEqual(302, response.status_code)
-
-
+    
+    def test_register_view_POST_blank_data(self):
+        url = reverse('querygenerator:register')
+        response = self.client.post(url, {})
+        self.assertEqual(200, response.status_code)
+    
+    def test_register_view_POST_invalid_data(self):
+        url = reverse('querygenerator:register')
+        response = self.client.post(url, {
+            'username': 'testuser',
+            'email': 'testuser@gmail.com',
+            'password1': 'password',
+            'password2': 'password',
+        })
+        self.assertEqual(200, response.status_code)
+    
+    def test_register_view_POST_valid_data(self):
+        url = reverse('querygenerator:register')
+        response = self.client.post(url, {
+            'username': 'testuser',
+            'email': 'testuser@gmail.com',
+            'password1': 'test_password193',
+            'password2': 'test_password193',
+        })
+        self.assertEqual(302, response.status_code)
 
 class AuthenticatedUserTestCase(AnonymousUserTestCase):
     def setUp(self) -> None:
