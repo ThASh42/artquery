@@ -55,6 +55,38 @@ class AnonymousUserTestCase(TestCase):
         })
         self.assertEqual(302, response.status_code)
 
+    def test_login_view_POST_blank_data(self):
+        url = reverse('querygenerator:login')
+        response = self.client.post(url, {})
+        self.assertEqual(200, response.status_code)
+    
+    def test_login_view_POST_invalid_data(self):
+        url = reverse('querygenerator:login')
+        response = self.client.post(url, {
+            'username': 'user_doesnt_exist',
+            'password': 'password_doesnt_exist123',
+        })
+        self.assertEqual(200, response.status_code)
+    
+    def test_login_view_POST_valid_data(self):
+        client_username = 'testloginuser'
+        client_email = 'testlogin@gmail.com'
+        client_password = 'testlog0_passwrd123'
+        client_data = {
+            'username': client_username,
+            'email': client_email,
+            'password': client_password,
+        }
+        get_user_model().objects.create_user(**client_data)
+
+        url = reverse('querygenerator:login')
+        response = self.client.post(url, {
+            'username': client_username,
+            'password': client_password,
+        })
+        self.assertEqual(302, response.status_code)
+
+
 class AuthenticatedUserTestCase(AnonymousUserTestCase):
     def setUp(self) -> None:
         self.client_username = 'clientuser'
