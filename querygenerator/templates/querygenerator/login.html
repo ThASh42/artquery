@@ -5,21 +5,50 @@ Login
 {% endblock title %}
 
 {% block body %}
-<h2>Login</h2>
-<form action="" method="POST">
-    {% csrf_token %}
+<section class="d-flex justify-content-center align-items-center">
     <div>
-        {{ form.non_field_errors }}
-        {% for field in form %}
-        {{ field.errors }}
-        {% endfor %}
-    </div>
-    {% for field in form %}
-        <div class="my-4">
-            {{ field.label_tag }}
-            {{ field }}
+        <div class="text-center">
+            <h2>Login</h2>
         </div>
-    {% endfor %}
-    <button type="submit">Login</button>
-</form>
+        {% if login_form.errors %}
+        <div class="d-flex justify-content-center align-items-center">
+            <div class="alert alert-danger mx-auto my-1" role="alert">
+                {% for error in login_form.non_field_errors %}
+                <div>
+                    {{ error }} <br>
+                </div>
+                {% endfor %}
+                {% for field in login_form %}
+                    {% if field.errors %}
+                        <div>
+                            {% for error in field.errors %}
+                                {{ error }}
+                                <br>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+        <div>
+            <form action="" method="POST">
+                {% csrf_token %}
+                {% for field in login_form %}
+                    <div class="my-3 d-flex justify-content-center align-items-center">
+                        {{ field }}
+                    </div>
+                {% endfor %}
+                <div id="login-button-div" class="mx-auto d-flex justify-content-center align-items-center">
+                    <button class="w-100 btn btn-danger" type="submit">Login</button>
+                </div>
+                <div class="d-flex justify-content-center align-items-center">
+                    <p class="mt-2">Don't Have an Account? 
+                        <a class="text-decoration-none" href="{% url 'querygenerator:register' %}">Register Here</a>
+                    </p>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
 {% endblock body %}

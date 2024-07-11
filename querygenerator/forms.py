@@ -18,3 +18,9 @@ class CustomUserCreationForm(UserCreationForm):
 class CustomAuthenticationForm(AuthenticationForm):
     class Meta:
         model = CustomUser
+    
+    def __init__(self, *args, **kwargs):
+        super(CustomAuthenticationForm, self).__init__(*args, **kwargs)
+        DEFAULT_ATTRS = {'class': 'form-control width-300'}
+        self.fields['username'].widget.attrs.update(DEFAULT_ATTRS | {'placeholder': 'Username'})
+        self.fields['password'].widget.attrs.update(DEFAULT_ATTRS | {'placeholder': 'Password'})

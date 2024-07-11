@@ -29,19 +29,19 @@ def user_register(request):
 
 def user_login(request):
     if request.method == 'POST':
-        form = CustomAuthenticationForm(request, data=request.POST)
-        if form.is_valid():
-            username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password')
+        login_form = CustomAuthenticationForm(request, data=request.POST)
+        if login_form.is_valid():
+            username = login_form.cleaned_data.get('username')
+            password = login_form.cleaned_data.get('password')
             user = authenticate(username=username, password=password)
             if user is not None:
                 login(request, user)
                 return redirect('querygenerator:index')
     else:
-        form = CustomAuthenticationForm()
+        login_form = CustomAuthenticationForm()
     
     return render(request, 'querygenerator/login.html', {
-        'form': form,
+        'login_form': login_form,
     })
 
 
