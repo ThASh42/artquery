@@ -10,16 +10,22 @@ Register
         <div>
             <h2 class="text-center">Register</h2>
         </div>
+        {% if register_form.errors %}
         <div class="d-flex justify-content-center align-items-center">
-            <div>
-                {{ register_form.non_field_errors }}
+            <div class="alert alert-danger mx-auto my-1" role="alert">
+                {% for field in register_form %}
+                    {% if field.errors %}
+                        <div>
+                            {% for error in field.errors %}
+                                {{ error }}
+                                <br>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                {% endfor %}
             </div>
-            {% for field in register_form %}
-            <div>
-                {{ field.errors }}
-            </div>
-            {% endfor %}
         </div>
+        {% endif %}
         <div>
             <form action="" method="POST">
                 {% csrf_token %}
