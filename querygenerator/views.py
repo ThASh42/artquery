@@ -11,19 +11,19 @@ def index(request):
 
 def user_register(request):
     if request.method == 'POST':
-        form = CustomUserCreationForm(request.POST)
-        if form.is_valid():
-            form.save()
-            username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password1')
+        register_form = CustomUserCreationForm(request.POST)
+        if register_form.is_valid():
+            register_form.save()
+            username = register_form.cleaned_data.get('username')
+            password = register_form.cleaned_data.get('password1')
             user = authenticate(username=username, password=password)
             login(request, user)
             return redirect('querygenerator:index')
     else:
-        form = CustomUserCreationForm()
+        register_form = CustomUserCreationForm()
     
     return render(request, 'querygenerator/register.html', {
-        'form': form,
+        'register_form': register_form,
     })
 
 
