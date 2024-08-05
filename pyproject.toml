@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "artquery"
+version = "0.1.0"
+description = ""
+authors = ["ThASh42 <thashmail42@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+django = "^5.0.7"
+djangorestframework = "^3.15.2"
+psycopg2 = "^2.9.9"
+django-filter = "^24.3"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
