@@ -2,6 +2,7 @@ from django.test import TestCase, Client
 from django.urls import reverse
 from django.contrib.auth import get_user_model
 
+
 class AnonymousUserTestCase(TestCase):
     def setUp(self) -> None:
         self.client = Client()
@@ -24,18 +25,18 @@ class AnonymousUserTestCase(TestCase):
         response = self.client.get(url)
         self.assertEqual(200, response.status_code)
         self.assertTemplateUsed(response, 'querygenerator/login.html')
-    
+
     def test_logout_view_GET(self):
         url = reverse('querygenerator:logout')
         response = self.client.get(url)
         self.assertEqual(302, response.status_code)
         self.assertRedirects(response, reverse('querygenerator:login'))
-    
+
     def test_register_view_POST_blank_data(self):
         url = reverse('querygenerator:register')
         response = self.client.post(url, {})
         self.assertEqual(200, response.status_code)
-    
+
     def test_register_view_POST_invalid_data(self):
         url = reverse('querygenerator:register')
         response = self.client.post(url, {
@@ -45,7 +46,7 @@ class AnonymousUserTestCase(TestCase):
             'password2': 'password',
         })
         self.assertEqual(200, response.status_code)
-    
+
     def test_register_view_POST_valid_data(self):
         url = reverse('querygenerator:register')
         response = self.client.post(url, {
@@ -61,7 +62,7 @@ class AnonymousUserTestCase(TestCase):
         url = reverse('querygenerator:login')
         response = self.client.post(url, {})
         self.assertEqual(200, response.status_code)
-    
+
     def test_login_view_POST_invalid_data(self):
         url = reverse('querygenerator:login')
         response = self.client.post(url, {
@@ -69,7 +70,7 @@ class AnonymousUserTestCase(TestCase):
             'password': 'password_doesnt_exist123',
         })
         self.assertEqual(200, response.status_code)
-    
+
     def test_login_view_POST_valid_data(self):
         client_username = 'testloginuser'
         client_email = 'testlogin@gmail.com'

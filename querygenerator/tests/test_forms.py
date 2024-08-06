@@ -1,5 +1,8 @@
 from django.test import TestCase
-from querygenerator.forms import CustomUserCreationForm, CustomAuthenticationForm
+from querygenerator.forms import (
+    CustomUserCreationForm,
+    CustomAuthenticationForm,
+)
 from django.contrib.auth import get_user_model
 
 
@@ -39,27 +42,34 @@ class FormRegistrationTestCase(TestCase):
                     self.assertIn(error, case['error_messages'])
                     case['error_messages'].remove(error)
             self.assertFalse(case['error_messages'])
-        
+
         test_cases = [
-            { # Similar to your other personal information
+            {  # Similar to your other personal information
                 'data': {
                     'username': 'testuser',
                     'email': 'testuser@gmail.com',
                     'password1': 'testuser01',
                     'password2': 'testuser01',
                 },
-                'error_messages': ['The password is too similar to the username.'],
+                'error_messages': [
+                    'The password is too similar to the username.'
+                ],
             },
-            { # Does not contain at least 8 characters.
+            {  # Does not contain at least 8 characters.
                 'data': {
                     'username': 'testuser',
                     'email': 'testuser@gmail.com',
                     'password1': 'hello1a',
                     'password2': 'hello1a',
                 },
-                'error_messages': ['This password is too short. It must contain at least 8 characters.'],
+                'error_messages': [
+                    (
+                        'This password is too short. '
+                        'It must contain at least 8 characters.'
+                    ),
+                ],
             },
-            { # Commonly used password.
+            {  # Commonly used password.
                 'data': {
                     'username': 'testuser',
                     'email': 'testuser@gmail.com',
@@ -68,7 +78,7 @@ class FormRegistrationTestCase(TestCase):
                 },
                 'error_messages': ['This password is too common.'],
             },
-            { # Entirely numeric
+            {  # Entirely numeric
                 'data': {
                     'username': 'testuser',
                     'email': 'testuser@gmail.com',
@@ -77,7 +87,7 @@ class FormRegistrationTestCase(TestCase):
                 },
                 'error_messages': ['This password is entirely numeric.'],
             },
-            { # Two password fields didn’t match.
+            {  # Two password fields didn’t match.
                 'data': {
                     'username': 'testuser',
                     'email': 'testuser@gmail.com',
@@ -86,7 +96,7 @@ class FormRegistrationTestCase(TestCase):
                 },
                 'error_messages': ['The two password fields didn’t match.'],
             },
-            { # Values must not be long
+            {  # Values must not be long
                 'data': {
                     'username': LONG_USERNAME,
                     'email': LONG_MAIL,
@@ -94,8 +104,14 @@ class FormRegistrationTestCase(TestCase):
                     'password2': LONG_PASSWORD,
                 },
                 'error_messages': [
-                    f'Ensure this value has at most 150 characters (it has {len(LONG_USERNAME)}).',
-                    f'Ensure this value has at most 254 characters (it has {len(LONG_MAIL)}).',
+                    (
+                        f'Ensure this value has at most 150 characters '
+                        f'(it has {len(LONG_USERNAME)}).'
+                    ),
+                    (
+                        f'Ensure this value has at most 254 characters '
+                        f'(it has {len(LONG_MAIL)}).'
+                    ),
                     'Enter a valid email address.',
                 ],
             },
@@ -110,7 +126,10 @@ class FormRegistrationTestCase(TestCase):
 
 class FormLoginTestCase(TestCase):
     def setUp(self) -> None:
-        ''' Username and password must be titled to check case sensitivity in further tests '''
+        '''
+            Username and password must be titled
+            to check case sensitivity in further tests
+        '''
         self.client_username = 'clientuser'.lower().title()
         self.client_email = 'client@gmail.com'
         self.client_password = 'clientpassword123'.lower().title()
@@ -130,7 +149,10 @@ class FormLoginTestCase(TestCase):
         self.assertTrue(form.is_valid())
 
     def test_user_login_form_invalid_data(self):
-        DEFAULT_LOGIN_ERROR_MESSAGE = 'Please enter a correct username and password. Note that both fields may be case-sensitive.'
+        DEFAULT_LOGIN_ERROR_MESSAGE = (
+            'Please enter a correct username and password. '
+            'Note that both fields may be case-sensitive.'
+        )
         STRING_MULTIPLIER: int = 100
         assert isinstance(STRING_MULTIPLIER, int)
         LONG_USERNAME: str = self.client_username * STRING_MULTIPLIER
@@ -150,35 +172,35 @@ class FormLoginTestCase(TestCase):
             self.assertFalse(case['error_messages'])
 
         test_cases = [
-            { # Check username upper case sensitivity (uppercase)
+            {  # Check username upper case sensitivity (uppercase)
                 'data': {
                     'username': self.client_username.upper(),
                     'password': self.client_password,
                 },
                 'error_messages': [DEFAULT_LOGIN_ERROR_MESSAGE],
             },
-            { # Check password upper case sensitivity (uppercase)
+            {  # Check password upper case sensitivity (uppercase)
                 'data': {
                     'username': self.client_username,
                     'password': self.client_password.upper(),
                 },
                 'error_messages': [DEFAULT_LOGIN_ERROR_MESSAGE],
             },
-            { # Check username upper case sensitivity (lowercase)
+            {  # Check username upper case sensitivity (lowercase)
                 'data': {
                     'username': self.client_username.lower(),
                     'password': self.client_password,
                 },
                 'error_messages': [DEFAULT_LOGIN_ERROR_MESSAGE],
             },
-            { # Check password upper case sensitivity (lowercase)
+            {  # Check password upper case sensitivity (lowercase)
                 'data': {
                     'username': self.client_username,
                     'password': self.client_password.lower(),
                 },
                 'error_messages': [DEFAULT_LOGIN_ERROR_MESSAGE],
             },
-            { # Username must not be long
+            {  # Username must not be long
                 'data': {
                     'username': LONG_USERNAME * 100,
                     'password': LONG_PASSWORD * 100,
