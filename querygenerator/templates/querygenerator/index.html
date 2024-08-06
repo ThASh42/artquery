@@ -5,16 +5,4 @@ Artquery
 {% endblock title %}
 
 {% block body %}
-
-    {% if user.is_authenticated %}
-        <h1>{{ user.username }} </h1>
-    {% endif %}
-    
-    {% if user.is_authenticated %}
-        <a href="{% url 'querygenerator:logout' %}">Logout</a>
-    {% else %}
-        <a href="{% url 'querygenerator:login' %}">Login</a>
-        <a href="{% url 'querygenerator:register' %}">Register</a>
-    {% endif %}
-
 {% endblock body %}

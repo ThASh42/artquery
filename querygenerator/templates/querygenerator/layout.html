@@ -13,6 +13,22 @@
     {% block head %}{% endblock head %}
 </head>
 <body>
+    <section class="bg-dark">
+        <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-between py-3 px-3 mb-4 border-bottom text-white">
+            <a href="/" class="d-flex align-items-center text-white text-decoration-none">
+                <h3 class="mb-0 me-2">Artquery</h3>
+            </a>
+            <div class="d-flex align-items-center justify-content-center text-end">
+                {% if user.is_authenticated %}
+                <h5 class="me-2 mb-0">{{ user }}</h5>
+                <a href={% url "querygenerator:logout" %} class="btn btn-danger me-0 me-lg-2">Logout</a>
+                {% else %}
+                    <a href={% url "querygenerator:login" %} class="btn btn-outline-light me-2">Login</a>
+                    <a href={% url "querygenerator:register" %} class="btn btn-danger">Sign-up</a>
+                {% endif %}
+            </div>
+        </header>
+    </section>
     <main class="container-sm mt-5">
         {% block body %}{% endblock body %}
     </main>
