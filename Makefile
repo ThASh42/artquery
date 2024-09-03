@@ -24,3 +24,7 @@ update: install migrate ;
 .PHONY: flake8
 flake8:
 	poetry run flake8
+
+.PHONY: cpsettingsdev
+cpsettingsdev:
+	cp core/artquery/settings/templates/settings.dev.py ./local/settings.dev.py
