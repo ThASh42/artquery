@@ -1,6 +1,7 @@
-from django.shortcuts import render, redirect
-from django.contrib.auth import login, authenticate, logout
-from .forms import CustomUserCreationForm, CustomAuthenticationForm
+from django.contrib.auth import authenticate, login, logout
+from django.shortcuts import redirect, render
+
+from .forms import CustomAuthenticationForm, CustomUserCreationForm
 
 
 def index(request):
@@ -20,9 +21,11 @@ def user_register(request):
     else:
         register_form = CustomUserCreationForm()
 
-    return render(request, 'querygenerator/register.html', {
-        'register_form': register_form,
-    })
+    return render(
+        request, 'querygenerator/register.html', {
+            'register_form': register_form,
+        }
+    )
 
 
 def user_login(request):
@@ -38,9 +41,11 @@ def user_login(request):
     else:
         login_form = CustomAuthenticationForm()
 
-    return render(request, 'querygenerator/login.html', {
-        'login_form': login_form,
-    })
+    return render(
+        request, 'querygenerator/login.html', {
+            'login_form': login_form,
+        }
+    )
 
 
 def user_logout(request):

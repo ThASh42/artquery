@@ -2,6 +2,10 @@
 install:
 	poetry install
 
+.PHONY: install-pre-commit
+install-pre-commit:
+	poetry run pre-commit uninstall; poetry run pre-commit install
+
 .PHONY: migrate
 migrate:
 	poetry run python -m core.manage migrate
@@ -18,13 +22,16 @@ runserver:
 createsuperuser:
 	poetry run python -m core.manage createsuperuser
 
-.PHONY: update
-update: install migrate ;
-
 .PHONY: flake8
 flake8:
 	poetry run flake8
 
-.PHONY: cpsettingsdev
 cpsettingsdev:
 	cp core/artquery/settings/templates/settings.dev.py ./local/settings.dev.py
+
+.PHONY: lint
+lint:
+	poetry run pre-commit run --all-files
+
+.PHONY: update
+update: install migrate install-pre-commit;

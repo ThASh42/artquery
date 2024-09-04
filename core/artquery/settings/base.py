@@ -3,8 +3,7 @@ import os
 SECRET_KEY = NotImplemented
 DEBUG = False
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -49,7 +48,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'core.artquery.wsgi.application'
 
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -61,16 +59,12 @@ DATABASES = {
     }
 }
 
-
-AUTH_PASSWORD_VALIDATORS = [
-    {"NAME": f"django.contrib.auth.password_validation.{name}"}
-    for name in [
-        "UserAttributeSimilarityValidator",
-        "MinimumLengthValidator",
-        "CommonPasswordValidator",
-        "NumericPasswordValidator"]
-]
-
+AUTH_PASSWORD_VALIDATORS = [{
+    "NAME": f"django.contrib.auth.password_validation.{name}"
+} for name in [
+    "UserAttributeSimilarityValidator", "MinimumLengthValidator",
+    "CommonPasswordValidator", "NumericPasswordValidator"
+]]
 
 LANGUAGE_CODE = 'en-us'
 

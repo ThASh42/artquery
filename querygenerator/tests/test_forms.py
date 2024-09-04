@@ -1,22 +1,25 @@
-from django.test import TestCase
-from querygenerator.forms import (
-    CustomUserCreationForm,
-    CustomAuthenticationForm,
-)
 from django.contrib.auth import get_user_model
+from django.test import TestCase
+
+from querygenerator.forms import (
+    CustomAuthenticationForm, CustomUserCreationForm
+)
 
 
 class FormRegistrationTestCase(TestCase):
+
     def setUp(self) -> None:
         return super().setUp()
 
     def test_user_registration_form_valid_data(self):
-        form = CustomUserCreationForm(data={
-            'username': 'testuser',
-            'email': 'testuser@gmail.com',
-            'password1': 'test_password193',
-            'password2': 'test_password193',
-        })
+        form = CustomUserCreationForm(
+            data={
+                'username': 'testuser',
+                'email': 'testuser@gmail.com',
+                'password1': 'test_password193',
+                'password2': 'test_password193',
+            }
+        )
         self.assertTrue(form.is_valid())
 
     def test_user_registration_form_invalid_data(self):
@@ -33,6 +36,7 @@ class FormRegistrationTestCase(TestCase):
             Two password fields must match.
             Username and email must not be long
         '''
+
         def assert_wrong_registration_data(case: dict) -> None:
             form = CustomUserCreationForm(data=case['data'])
             self.assertFalse(form.is_valid())
@@ -125,6 +129,7 @@ class FormRegistrationTestCase(TestCase):
 
 
 class FormLoginTestCase(TestCase):
+
     def setUp(self) -> None:
         '''
             Username and password must be titled
@@ -142,10 +147,12 @@ class FormLoginTestCase(TestCase):
         return super().setUp()
 
     def test_user_login_form_valid_data(self):
-        form = CustomAuthenticationForm(data={
-            'username': self.client_username,
-            'password': self.client_password,
-        })
+        form = CustomAuthenticationForm(
+            data={
+                'username': self.client_username,
+                'password': self.client_password,
+            }
+        )
         self.assertTrue(form.is_valid())
 
     def test_user_login_form_invalid_data(self):
@@ -161,6 +168,7 @@ class FormLoginTestCase(TestCase):
             Values must be case-sensitive
             Username must not be long
         '''
+
         def assert_wrong_login_data(case: dict) -> None:
             form = CustomAuthenticationForm(data=case['data'])
             self.assertFalse(form.is_valid())

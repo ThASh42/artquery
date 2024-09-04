@@ -1,12 +1,17 @@
-from django import forms
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django import forms  # noqa:F401
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+
 from .models import CustomUser
 
 
 class CustomUserCreationForm(UserCreationForm):
+
     class Meta(UserCreationForm.Meta):
         model = CustomUser
-        fields = ('username', 'email',)
+        fields = (
+            'username',
+            'email',
+        )
 
     def __init__(self, *args, **kwargs):
         super(CustomUserCreationForm, self).__init__(*args, **kwargs)
@@ -26,6 +31,7 @@ class CustomUserCreationForm(UserCreationForm):
 
 
 class CustomAuthenticationForm(AuthenticationForm):
+
     class Meta:
         model = CustomUser
 
