@@ -21,6 +21,7 @@ flake8 = "^7.1.1"
 pre-commit = "^3.8.0"
 mypy = "^1.11.2"
 types-pyyaml = "^6.0.12.20240808"
+colorlog = "^6.8.2"
 
 [tool.isort]
 multi_line_output = 5
