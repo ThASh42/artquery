@@ -1,0 +1,17 @@
+services:
+
+  db:
+    image: postgres:16.4-alpine
+    restart: unless-stopped
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_DB: artquery
+      POSTGRES_USER: artqueryuser
+      POSTGRES_PASSWORD: userpassword15243
+    volumes:
+      - postgresql-data:/var/lib/postgresql/data
+
+volumes:
+  postgresql-data:
+    driver: local

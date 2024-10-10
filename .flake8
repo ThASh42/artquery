@@ -11,7 +11,7 @@ filename = *.py
 accept-encodings = utf-8
 per-file-ignores =
     */__init__.py: F401,
-    cooking_core/project/settings/templates/settings.dev.py:F821,E501
-    cooking_core/project/settings/*.py:E501
+    artquery/artquery/settings/templates/settings.dev.py:F821,E501
+    artquery/artquery/settings/*.py:E501
     local/settings.dev.py:E501,
-    cooking_core/manage.py:E501,
+    artquery/manage.py:E501,

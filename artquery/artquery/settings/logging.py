@@ -20,7 +20,7 @@ LOGGING = {
             'propagate': True,
         } for logger_name in (
             'django', 'django.request', 'django.db.backends',
-            'django.template', 'core', 'urllib3', 'asyncio'
+            'django.template', 'bitcoin_core'
         )
     },
     'root': {

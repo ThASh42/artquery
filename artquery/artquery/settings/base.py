@@ -19,7 +19,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
 
     # Apps
-    'cooking_core.accounts.apps.AccountsConfig',
+    'artquery.accounts.apps.AccountConfig',
 ]
 
 MIDDLEWARE = [

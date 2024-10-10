@@ -20,19 +20,19 @@ lock:
 
 .PHONY: migrate
 migrate:
-	poetry run python -m cooking_core.manage migrate
+	poetry run python -m artquery.manage migrate
 
 .PHONY: migrations
 migrations:
-	poetry run python -m cooking_core.manage makemigrations
+	poetry run python -m artquery.manage makemigrations
 
 .PHONY: runserver
 runserver:
-	poetry run python -m cooking_core.manage runserver
+	poetry run python -m artquery.manage runserver
 
 .PHONY: superuser
 superuser:
-	poetry run python -m cooking_core.manage createsuperuser
+	poetry run python -m artquery.manage createsuperuser
 
 .PHONY: up-dependencies-only
 up-dependencies-only:

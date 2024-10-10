@@ -1,0 +1,28 @@
+services:
+
+  db:
+    image: postgres:16.4-alpine
+    restart: unless-stopped
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_DB: artquery
+      POSTGRES_USER: artqueryuser
+      POSTGRES_PASSWORD: userpassword15243
+    volumes:
+      - postgresql-data:/var/lib/postgresql/data
+
+  app:
+    build: .
+    restart: unless-stopped
+    ports:
+      - '8000:8000'
+    depends_on:
+      - db
+    environment:
+      - ARTQUERY_SETTING_DATABASES: '{"default":{"HOST":"db"}}'
+      - ARTQUERY_SETTING_LOCAL_SETTINGS_PATH: 'local/settings.prod.py'
+
+volumes:
+  postgresql-data:
+    driver: local

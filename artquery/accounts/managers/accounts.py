@@ -1,5 +1,6 @@
-from cooking_core.general.utils.cryptography import derive_public_key
 from django.contrib.auth.models import BaseUserManager
+
+from artquery.general.utils.cryptography import derive_public_key
 
 
 class AccountManager(BaseUserManager):
