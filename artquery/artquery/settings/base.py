@@ -1,21 +1,25 @@
-import os
-
 SECRET_KEY = NotImplemented
 DEBUG = False
 
 ALLOWED_HOSTS = ['*']
-
-# Application definition
+CORS_ALLOW_ALL_ORIGINS = True
 
 INSTALLED_APPS = [
-    'rest_framework',
-    'querygenerator',
+    # 'querygenerator',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # Third party
+    'corsheaders',
+    'rest_framework',
+    'rest_framework_simplejwt',
+
+    # Apps
+    'cooking_core.accounts.apps.AccountsConfig',
 ]
 
 MIDDLEWARE = [
@@ -28,7 +32,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'core.artquery.urls'
+ROOT_URLCONF = 'artquery.artquery.urls'
 
 TEMPLATES = [
     {
@@ -46,16 +50,18 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'core.artquery.wsgi.application'
+WSGI_APPLICATION = 'artquery.artquery.wsgi.application'
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('DB_NAME', 'artquery'),
-        'USER': os.environ.get('DB_USER', 'artqueryuser'),
-        'PASSWORD': os.environ.get('DB_PASSWORD', 'userpassword15243'),
-        'HOST': os.environ.get('DB_HIST', 'localhost'),
-        'PORT': os.environ.get('DB_PORT', '5432'),
+        'NAME': 'artquery',
+        'USER': 'artqueryuser',
+        'PASSWORD': 'userpassword15243',
+        'HOST': 'localhost',
+        'PORT': '5432',
+        'ATOMIC_REQUESTS': True,
+        'CONN_MAX_AGE': 600,
     }
 }
 
@@ -66,18 +72,13 @@ AUTH_PASSWORD_VALIDATORS = [{
     "CommonPasswordValidator", "NumericPasswordValidator"
 ]]
 
+AUTH_USER_MODEL = 'accounts.Account'
+
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_TZ = True
 
 STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-AUTH_USER_MODEL = 'querygenerator.CustomUser'
-
-LOGIN_URL = 'login/'

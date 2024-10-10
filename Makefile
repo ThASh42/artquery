@@ -1,3 +1,7 @@
+.PHONY: flake8
+flake8:
+	poetry run flake8
+
 .PHONY: install
 install:
 	poetry install
@@ -6,32 +10,34 @@ install:
 install-pre-commit:
 	poetry run pre-commit uninstall; poetry run pre-commit install
 
-.PHONY: migrate
-migrate:
-	poetry run python -m core.manage migrate
-
-.PHONY: makemigrations
-makemigrations:
-	poetry run python -m core.manage makemigrations
-
-.PHONY: runserver
-runserver:
-	poetry run python -m core.manage runserver
-
-.PHONY: createsuperuser
-createsuperuser:
-	poetry run python -m core.manage createsuperuser
-
-.PHONY: flake8
-flake8:
-	poetry run flake8
-
-cpsettingsdev:
-	cp core/artquery/settings/templates/settings.dev.py ./local/settings.dev.py
-
 .PHONY: lint
 lint:
 	poetry run pre-commit run --all-files
 
+.PHONY: lock
+lock:
+	poetry lock
+
+.PHONY: migrate
+migrate:
+	poetry run python -m cooking_core.manage migrate
+
+.PHONY: migrations
+migrations:
+	poetry run python -m cooking_core.manage makemigrations
+
+.PHONY: runserver
+runserver:
+	poetry run python -m cooking_core.manage runserver
+
+.PHONY: superuser
+superuser:
+	poetry run python -m cooking_core.manage createsuperuser
+
+.PHONY: up-dependencies-only
+up-dependencies-only:
+	test -f .env || touch .env
+	docker compose -f docker-compose.dev.yml up --force-recreate db
+
 .PHONY: update
-update: install migrate install-pre-commit;
+update: install migrate install-pre-commit ;
