@@ -9,8 +9,7 @@ from ..serializers.login import LoginSerializers
 
 class LoginView(APIView):
 
-    @staticmethod
-    def post(request):
+    def post(self, request):
         serializer = LoginSerializers(
             data=request.data, context={'request': request}
         )
