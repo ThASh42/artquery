@@ -2,34 +2,24 @@ from django.contrib.auth import get_user_model
 from django.core.exceptions import ObjectDoesNotExist
 from rest_framework import serializers
 
-from artquery.general.constants import ACCOUNT_NUMBER_LENGTH
-from artquery.general.utils.cryptography import derive_public_key
-from artquery.general.validators import HexStringValidator
-
-Account = get_user_model()
+User = get_user_model()
 
 
 class LoginSerializers(serializers.Serializer):
-    signing_key = serializers.CharField(
-        max_length=ACCOUNT_NUMBER_LENGTH,
-        min_length=ACCOUNT_NUMBER_LENGTH,
-        required=True,
-        validators=(HexStringValidator(ACCOUNT_NUMBER_LENGTH),),
-    )
+    id = serializers.UUIDField()  # noqa:A003
 
     def create(self, validate_data):
-        return validate_data['account']
+        return validate_data['user']
 
     def update(self, instane, validated_data):
         pass
 
     def validate(self, data):
-        signing_key = data['signing_key'].lower().strip()
-        public_key = derive_public_key(signing_key)
+        pass
 
         try:
-            account = Account.objects.get(account_number=public_key)
+            user = User.objects.get(pk=id)
         except ObjectDoesNotExist:
             raise serializers.ValidationError('Invalid login credentials')
 
-        return {'account': account}
+        return {'user': user}

@@ -5,7 +5,6 @@ ALLOWED_HOSTS = ['*']
 CORS_ALLOW_ALL_ORIGINS = True
 
 INSTALLED_APPS = [
-    # 'querygenerator',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -19,7 +18,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
 
     # Apps
-    'artquery.accounts.apps.AccountConfig',
+    'artquery.users.apps.UserConfig',
 ]
 
 MIDDLEWARE = [
@@ -72,7 +71,7 @@ AUTH_PASSWORD_VALIDATORS = [{
     "CommonPasswordValidator", "NumericPasswordValidator"
 ]]
 
-AUTH_USER_MODEL = 'accounts.Account'
+AUTH_USER_MODEL = 'users.CustomUser'
 
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
