@@ -15,7 +15,7 @@ INSTALLED_APPS = [
     # Third party
     'corsheaders',
     'rest_framework',
-    'rest_framework_simplejwt',
+    'rest_framework.authtoken',
 
     # Apps
     'artquery.users.apps.UserConfig',
