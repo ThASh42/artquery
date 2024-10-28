@@ -1,10 +1,11 @@
 [tool.poetry]
 name = "artquery"
-version = "0.1.0"
+version = "1.8.3"
 description = ""
 authors = ["ThASh42 <thashmail42@gmail.com>"]
 license = "MIT"
 readme = "README.md"
+packages = [{include = "artquery"}]
 
 [tool.poetry.dependencies]
 python = "^3.12"
@@ -22,6 +23,11 @@ pre-commit = "^3.8.0"
 mypy = "^1.11.2"
 types-pyyaml = "^6.0.12.20240808"
 colorlog = "^6.8.2"
+django-cors-headers = "^4.4.0"
+pydantic = "^2.9.2"
+pynacl = "^1.5.0"
+djangorestframework-simplejwt = "^5.3.1"
+coverage = "^7.6.4"
 
 [tool.isort]
 multi_line_output = 5
