@@ -1,25 +1,19 @@
-from django.contrib.auth import get_user_model
-from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.auth import authenticate, get_user_model
 from rest_framework import serializers
 
-User = get_user_model()
+CustomUser = get_user_model()
 
 
 class LoginSerializers(serializers.Serializer):
-    id = serializers.UUIDField()  # noqa:A003
+    email = serializers.EmailField(required=True)
+    password = serializers.CharField(write_only=True, required=True)
 
-    def create(self, validate_data):
-        return validate_data['user']
+    def create(self, validated_data):
+        email = validated_data.get('email')
+        password = validated_data.get('password')
 
-    def update(self, instane, validated_data):
-        pass
-
-    def validate(self, data):
-        pass
-
-        try:
-            user = User.objects.get(pk=id)
-        except ObjectDoesNotExist:
-            raise serializers.ValidationError('Invalid login credentials')
-
-        return {'user': user}
+        user = authenticate(username=email, password=password)
+        if not user:
+            raise serializers.ValidationError(('Invalid email or password'))
+        validated_data['user'] = user
+        return user

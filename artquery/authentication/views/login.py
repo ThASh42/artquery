@@ -1,6 +1,7 @@
+from rest_framework import status
+from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework_simplejwt.tokens import RefreshToken
 
 from artquery.users.serializers.users import UserSerializer
 
@@ -13,14 +14,14 @@ class LoginView(APIView):
         serializer = LoginSerializers(
             data=request.data, context={'request': request}
         )
-        serializer.is_valid(raise_exception=True)
+        if not serializer.is_valid():
+            return Response(
+                serializer.errors, status=status.HTTP_400_BAD_REQUEST
+            )
         user = serializer.save()
-        refresh_token = RefreshToken.for_user(user)
+        token, created = Token.objects.get_or_create(user=user)
 
         return Response({
-            'user': UserSerializer(user).data,
-            'authentication': {
-                'access_token': str(refresh_token.access_token),
-                'refresh_token': str(refresh_token),
-            },
+            'data': UserSerializer(user).data,
+            'token': token.key,
         })

@@ -6,6 +6,10 @@ from ..models.users import CustomUser
 
 
 class UserSerializer(serializers.ModelSerializer):
+    username = serializers.CharField(
+        required=True,
+        validators=[UniqueValidator(queryset=CustomUser.objects.all())]
+    )
     email = serializers.EmailField(
         required=True,
         validators=[UniqueValidator(queryset=CustomUser.objects.all())]
@@ -18,8 +22,13 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
         fields = (
-            'id', 'password', 'password2', 'username', 'email', 'first_name',
-            'last_name'
+            'id',
+            'password',
+            'password2',
+            'username',
+            'email',
+            'first_name',
+            'last_name',
         )
         read_only_fields = ('id',)
 
@@ -28,7 +37,6 @@ class UserSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError({
                 "password": "Password fields didn't match."
             })
-
         return attrs
 
     def create(self, validated_data):
