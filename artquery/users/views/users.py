@@ -1,9 +1,23 @@
+from django.shortcuts import render
+from django.views import View
 from rest_framework import status, viewsets
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 
+from ..forms import CustomUserCreationForm
 from ..models import CustomUser
 from ..serializers.users import UserSerializer
+
+
+class RegistrationView(View):
+
+    def get(self, request):
+        register_form = CustomUserCreationForm()
+        return render(
+            request, 'accounts/register.html', {
+                "register_form": register_form,
+            }
+        )
 
 
 class UserViewSet(viewsets.ModelViewSet):

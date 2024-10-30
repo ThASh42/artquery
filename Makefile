@@ -30,12 +30,20 @@ migrations:
 runserver:
 	poetry run python -m artquery.manage runserver
 
+.PHONY: shell
+shell:
+	poetry run python -m thenewboston.manage shell
+
+.PHONY: dbshell
+dbshell:
+	poetry run python -m artquery.manage dbshell
+
 .PHONY: superuser
 superuser:
 	poetry run python -m artquery.manage createsuperuser
 
-.PHONY: up-dependencies-only
-up-dependencies-only:
+.PHONY: up-dependencies
+up-dependencies:
 	test -f .env || touch .env
 	docker compose -f docker-compose.dev.yml up --force-recreate db
 

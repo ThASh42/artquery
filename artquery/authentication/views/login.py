@@ -1,3 +1,4 @@
+from django.shortcuts import render
 from rest_framework import status
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
@@ -5,10 +6,19 @@ from rest_framework.views import APIView
 
 from artquery.users.serializers.users import UserSerializer
 
+from ..forms import CustomAuthenticationForm
 from ..serializers.login import LoginSerializers
 
 
 class LoginView(APIView):
+
+    def get(self, request):
+        login_form = CustomAuthenticationForm()
+        return render(
+            request, 'authentication/login.html', {
+                "login_form": login_form,
+            }
+        )
 
     def post(self, request):
         serializer = LoginSerializers(

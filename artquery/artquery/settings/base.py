@@ -36,7 +36,9 @@ ROOT_URLCONF = 'artquery.artquery.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            BASE_DIR / "artquery" / "templates"  # type: ignore # noqa:F821
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
