@@ -1,3 +1,4 @@
+from django.contrib.auth import login
 from django.shortcuts import render
 from django.views import View
 from rest_framework import status, viewsets
@@ -31,8 +32,10 @@ class UserViewSet(viewsets.ModelViewSet):
             return Response(
                 serializer.errors, status=status.HTTP_400_BAD_REQUEST
             )
-
         user = serializer.save()
+
+        login(request, user)
+
         token = Token.objects.create(user=user)
         return Response(
             {

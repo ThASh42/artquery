@@ -1,3 +1,4 @@
+from django.contrib.auth import login
 from django.shortcuts import render
 from rest_framework import status
 from rest_framework.authtoken.models import Token
@@ -29,6 +30,9 @@ class LoginView(APIView):
                 serializer.errors, status=status.HTTP_400_BAD_REQUEST
             )
         user = serializer.save()
+
+        login(request, user)
+
         token, created = Token.objects.get_or_create(user=user)
 
         return Response({
