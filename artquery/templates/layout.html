@@ -21,8 +21,10 @@
             <div class="d-flex align-items-center justify-content-center text-end">
                 {% if user.is_authenticated %}
                 <h5 class="me-2 mb-0">{{ user.username }}</h5>
-                <!-- TODO -->
-                <!-- <a href= url "artquery:logout"  class="btn btn-danger me-0 me-lg-2">Logout</a> -->
+                <form action={% url "authentication:logout"%} method="POST">
+                    {% csrf_token %}
+                    <button class="btn btn-danger me-0 me-lg-2" type="submit">Logout</button>
+                </form>
                 {% else %}
                     <a href={% url "authentication:login" %} class="btn btn-outline-light me-2">Login</a>
                     <a href={% url "users:register" %} class="btn btn-danger">Sign-up</a>
