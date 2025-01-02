@@ -9,12 +9,12 @@ DEFAULT_ATTRS = {'class': 'form-control width-300'}
 
 class CustomAuthenticationForm(forms.Form):
 
-    email = forms.EmailField(
-        label=_("Email"),
-        widget=forms.EmailInput(
+    username = forms.CharField(
+        label=_("Username or email address"),
+        widget=forms.TextInput(
             attrs={
                 **DEFAULT_ATTRS,
-                'placeholder': _('Email adress..'),
+                'placeholder': _('Username or email address'),
             }
         )
     )

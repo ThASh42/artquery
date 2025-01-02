@@ -8,7 +8,7 @@ from rest_framework.views import APIView
 from artquery.users.serializers.users import UserSerializer
 
 from ..forms import CustomAuthenticationForm
-from ..serializers.login import LoginSerializers
+from ..serializers.login import LoginSerializer
 
 
 class LoginView(APIView):
@@ -22,7 +22,7 @@ class LoginView(APIView):
         )
 
     def post(self, request):
-        serializer = LoginSerializers(
+        serializer = LoginSerializer(
             data=request.data, context={'request': request}
         )
         if not serializer.is_valid():
