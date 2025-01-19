@@ -6,8 +6,17 @@ CustomUser = get_user_model()
 
 
 class LoginSerializer(serializers.Serializer):
-    username = serializers.CharField(required=True)
-    password = serializers.CharField(required=True, write_only=True)
+    username = serializers.CharField(
+        min_length=4,
+        max_length=128,
+        required=True,
+    )
+    password = serializers.CharField(
+        min_length=8,
+        max_length=128,
+        required=True,
+        write_only=True,
+    )
 
     def validate(self, attrs):
         username = attrs.get('username')
