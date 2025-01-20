@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth import authenticate
 from django.utils.translation import gettext_lazy as _
 
-from artquery.users.models import CustomUser
+from backend.users.models import CustomUser
 
 DEFAULT_ATTRS = {'class': 'form-control width-300'}
 

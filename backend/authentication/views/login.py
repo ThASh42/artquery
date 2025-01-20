@@ -5,7 +5,7 @@ from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from artquery.users.serializers.users import UserSerializer
+from backend.users.serializers.users import UserSerializer
 
 from ..forms import CustomAuthenticationForm
 from ..serializers.login import LoginSerializer

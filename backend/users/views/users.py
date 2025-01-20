@@ -20,7 +20,7 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = CustomUser.objects.all()
     serializer_class = UserSerializer
     renderer_classes = [
-        TemplateHTMLRenderer, JSONRenderer, BrowsableAPIRenderer
+        JSONRenderer, BrowsableAPIRenderer, TemplateHTMLRenderer
     ]
 
     def create(self, request):

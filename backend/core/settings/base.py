@@ -18,7 +18,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
 
     # Apps
-    'artquery.users.apps.UserConfig',
+    'backend.users.apps.UserConfig',
 ]
 
 MIDDLEWARE = [
@@ -31,13 +31,13 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'artquery.artquery.urls'
+ROOT_URLCONF = 'backend.core.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            BASE_DIR / "artquery" / "templates"  # type: ignore # noqa:F821
+            BASE_DIR / "backend" / "templates"  # type: ignore # noqa:F821
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -51,7 +51,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'artquery.artquery.wsgi.application'
+WSGI_APPLICATION = 'backend.core.wsgi.application'
 
 DATABASES = {
     'default': {
@@ -85,5 +85,5 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTHENTICATION_BACKENDS = [
-    'artquery.authentication.backends.backends.EmailBackend',  # Correct path
+    'backend.authentication.backends.backends.EmailBackend',  # Correct path
 ]
