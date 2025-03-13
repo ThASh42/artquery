@@ -20,22 +20,30 @@ lock:
 
 .PHONY: migrate
 migrate:
-	poetry run python -m artquery.manage migrate
+	poetry run python -m backend.manage migrate
 
 .PHONY: migrations
 migrations:
-	poetry run python -m artquery.manage makemigrations
+	poetry run python -m backend.manage makemigrations
 
 .PHONY: runserver
 runserver:
-	poetry run python -m artquery.manage runserver
+	poetry run python -m backend.manage runserver
+
+.PHONY: shell
+shell:
+	poetry run python -m thenewboston.manage shell
+
+.PHONY: dbshell
+dbshell:
+	poetry run python -m backend.manage dbshell
 
 .PHONY: superuser
 superuser:
-	poetry run python -m artquery.manage createsuperuser
+	poetry run python -m backend.manage createsuperuser
 
-.PHONY: up-dependencies-only
-up-dependencies-only:
+.PHONY: up-dependencies
+up-dependencies:
 	test -f .env || touch .env
 	docker compose -f docker-compose.dev.yml up --force-recreate db
 
