@@ -1,7 +1,7 @@
 from django.urls import path
 
-from .views.login import LoginView
-from .views.logout import LogoutView
+from ..views.login import LoginView
+from ..views.logout import LogoutView
 
 app_name = 'authentication'
 
