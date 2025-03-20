@@ -15,13 +15,13 @@ INSTALLED_APPS = [
     # Third party
     'corsheaders',
     'rest_framework',
-    'rest_framework.authtoken',
 
     # Apps
     'backend.users.apps.UserConfig',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -85,5 +85,8 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTHENTICATION_BACKENDS = [
-    'backend.authentication.backends.backends.EmailBackend',  # Correct path
+    'backend.authentication.backends.backends.EmailBackend',
 ]
+
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
