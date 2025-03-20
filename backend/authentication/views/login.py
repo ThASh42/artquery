@@ -1,9 +1,9 @@
 from django.contrib.auth import login
 from django.shortcuts import render
 from rest_framework import status
-from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework_simplejwt.tokens import RefreshToken
 
 from backend.users.serializers.users import UserSerializer
 
@@ -33,9 +33,10 @@ class LoginView(APIView):
 
         login(request, user)
 
-        token, created = Token.objects.get_or_create(user=user)
+        refresh = RefreshToken.for_user(user)
+        access_token = str(refresh.access_token)
 
-        return Response({
-            'data': UserSerializer(user).data,
-            'token': token.key,
-        })
+        response = Response({'data': UserSerializer(user).data,})
+        response.set_cookie(key="jwt", value=access_token, httponly=True, secure=True, max_age=15*60)
+
+        return response

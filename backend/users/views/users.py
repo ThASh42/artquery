@@ -3,11 +3,11 @@ from django.contrib.auth import login
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from rest_framework import generics, status, viewsets
-from rest_framework.authtoken.models import Token
 from rest_framework.renderers import (
     BrowsableAPIRenderer, JSONRenderer, TemplateHTMLRenderer
 )
 from rest_framework.response import Response
+from rest_framework_simplejwt.tokens import RefreshToken
 
 from ..models import CustomUser
 from ..serializers.users import UserSerializer
@@ -37,19 +37,26 @@ class UserViewSet(viewsets.ModelViewSet):
 
         user = serializer.save()
         login(request, user)
-        token = Token.objects.create(user=user)
+        refresh = RefreshToken.for_user(user)
+        access_token = str(refresh.access_token)
 
         if request.accepted_renderer.format == 'html':
             messages.success(request, "Registration successful!")
             return redirect(reverse('authentication:login'))
 
-        return Response(
-            {
-                'token': token.key,
-                'data': UserSerializer(user).data,
-            },
+        response = Response(
+            {'data': UserSerializer(user).data,}, 
             status=status.HTTP_201_CREATED,
         )
+        response.set_cookie(
+            key="jwt", 
+            value=access_token, 
+            httponly=True, 
+            secure=True, 
+            max_age=15*60,
+        )
+
+        return response
 
 
 class UserRegisterView(generics.GenericAPIView):
