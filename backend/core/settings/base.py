@@ -15,6 +15,7 @@ INSTALLED_APPS = [
     # Third party
     'corsheaders',
     'rest_framework',
+    'rest_framework_simplejwt.token_blacklist',
 
     # Apps
     'backend.users.apps.UserConfig',
