@@ -1,6 +1,7 @@
 from django.contrib.auth import authenticate, get_user_model
 from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
+from rest_framework_simplejwt.tokens import RefreshToken
 
 CustomUser = get_user_model()
 
@@ -33,6 +34,16 @@ class LoginSerializer(serializers.Serializer):
             })
         attrs['user'] = user
         return attrs
+
+    def get_tokens(self, user):
+        tokens = RefreshToken.for_user(user)
+        refresh = str(tokens)
+        access = str(tokens.access_token)
+        data = {
+            "refresh": refresh,
+            "access": access
+        }
+        return data
 
     def create(self, validated_data):
         return validated_data['user']

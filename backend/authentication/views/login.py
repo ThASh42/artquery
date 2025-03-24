@@ -3,7 +3,6 @@ from django.shortcuts import render
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework_simplejwt.tokens import RefreshToken
 
 from backend.users.serializers.users import UserSerializer
 
@@ -29,14 +28,23 @@ class LoginView(APIView):
             return Response(
                 serializer.errors, status=status.HTTP_400_BAD_REQUEST
             )
-        user = serializer.save()
 
+        user = serializer.save()
         login(request, user)
 
-        refresh = RefreshToken.for_user(user)
-        access_token = str(refresh.access_token)
+        tokens = serializer.get_tokens(user)
+        response = Response({'data': UserSerializer(user).data, 'token_data': tokens})
 
-        response = Response({'data': UserSerializer(user).data,})
-        response.set_cookie(key="jwt", value=access_token, httponly=True, secure=True, max_age=15*60)
+        response.set_cookie(key="access_token",
+                            value=tokens['access'],
+                            httponly=True,
+                            secure=True,
+                            samesite="Strict",)
+
+        response.set_cookie(key="refresh_token",
+                            value=tokens['refresh'],
+                            httponly=True,
+                            secure=True,
+                            samesite="Strict",)
 
         return response
