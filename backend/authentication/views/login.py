@@ -38,12 +38,12 @@ class LoginView(APIView):
                             value=tokens['access'],
                             httponly=True,
                             secure=True,
-                            samesite="Strict",)
+                            samesite="None",)
 
         response.set_cookie(key="refresh_token",
                             value=tokens['refresh'],
                             httponly=True,
                             secure=True,
-                            samesite="Strict",)
+                            samesite="None",)
 
         return response

@@ -19,7 +19,7 @@ class CookieTokenRefreshView(TokenRefreshView):
                                 value=access_token,
                                 httponly=True,
                                 secure=True,
-                                samesite="Strict",)
+                                samesite="None",)
             return response
         except Exception as e:
             return Response({"error": f"{e}"}, status=status.HTTP_401_UNAUTHORIZED)
