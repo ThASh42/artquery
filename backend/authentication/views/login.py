@@ -30,7 +30,6 @@ class LoginView(APIView):
             )
 
         user = serializer.save()
-        login(request, user)
 
         tokens = serializer.get_tokens(user)
         response = Response({'data': UserSerializer(user).data, 'token_data': tokens})

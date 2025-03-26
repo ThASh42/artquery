@@ -17,8 +17,6 @@ class LogoutView(View):
             except Exception as e:
                 return response({"error":"Error invalidating token: " + str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
-        logout(request)
-
         response = HttpResponseRedirect(reverse('authentication:login'))
         response.delete_cookie("access_token")
         response.delete_cookie("refresh_token")

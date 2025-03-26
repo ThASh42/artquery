@@ -35,10 +35,12 @@ class UserViewSet(viewsets.ModelViewSet):
             )
 
         user = serializer.save()
-        login(request, user)
 
         tokens = serializer.get_tokens(user)
-        response = Response({'data': UserSerializer(user).data, 'token_data': tokens})
+        response = Response(
+            {'data': UserSerializer(user).data, 'tokens': tokens},
+            status=status.HTTP_201_CREATED,
+        )
 
         response.set_cookie(key="access_token",
                             value=tokens['access'],
@@ -51,11 +53,6 @@ class UserViewSet(viewsets.ModelViewSet):
                             httponly=True,
                             secure=True,
                             samesite="Strict",)
-
-        response = Response(
-            {'data': UserSerializer(user).data, 'token_data': token_data},
-            status=status.HTTP_201_CREATED,
-        )
 
         if request.accepted_renderer.format == 'html':
             messages.success(request, "Registration successful!")

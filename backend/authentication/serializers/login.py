@@ -20,10 +20,8 @@ class LoginSerializer(serializers.Serializer):
     )
 
     def validate(self, attrs):
-        username = attrs.get('username')
-        password = attrs.get('password')
+        user = authenticate(**attrs)
 
-        user = authenticate(username=username, password=password)
         if not user:
             raise serializers.ValidationError({
                 "non_field_errors": [_("Invalid email or password.")]
@@ -32,6 +30,7 @@ class LoginSerializer(serializers.Serializer):
             raise serializers.ValidationError({
                 "non_field_errors": [_("This account is inactive.")]
             })
+
         attrs['user'] = user
         return attrs
 
