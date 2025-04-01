@@ -3,7 +3,6 @@ from django.contrib.auth import login
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from rest_framework import generics, status, viewsets
-from rest_framework.authtoken.models import Token
 from rest_framework.renderers import (
     BrowsableAPIRenderer, JSONRenderer, TemplateHTMLRenderer
 )
@@ -36,20 +35,32 @@ class UserViewSet(viewsets.ModelViewSet):
             )
 
         user = serializer.save()
-        login(request, user)
-        token = Token.objects.create(user=user)
+
+        tokens = serializer.get_tokens(user)
+        response = Response(
+            {'data': UserSerializer(user).data, 'tokens': tokens},
+            status=status.HTTP_201_CREATED,
+        )
+
+        response.set_cookie(key="access_token",
+                            value=tokens['access'],
+                            httponly=True,
+                            secure=True,
+                            samesite="Strict",
+                            max_age=60*60)
+
+        response.set_cookie(key="refresh_token",
+                            value=tokens['refresh'],
+                            httponly=True,
+                            secure=True,
+                            samesite="Strict",
+                            max_age=60*60*24*30)
 
         if request.accepted_renderer.format == 'html':
             messages.success(request, "Registration successful!")
             return redirect(reverse('authentication:login'))
 
-        return Response(
-            {
-                'token': token.key,
-                'data': UserSerializer(user).data,
-            },
-            status=status.HTTP_201_CREATED,
-        )
+        return response
 
 
 class UserRegisterView(generics.GenericAPIView):

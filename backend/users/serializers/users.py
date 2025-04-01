@@ -1,6 +1,7 @@
 from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
+from rest_framework_simplejwt.tokens import RefreshToken
 
 from ..models.users import CustomUser
 
@@ -45,6 +46,16 @@ class UserSerializer(serializers.ModelSerializer):
                 "password1": "Password fields didn't match."
             })
         return attrs
+
+    def get_tokens(self, user):
+        tokens = RefreshToken.for_user(user)
+        refresh = str(tokens)
+        access = str(tokens.access_token)
+        data = {
+            "refresh": refresh,
+            "access": access
+        }
+        return data
 
     def create(self, validated_data):
         user = CustomUser.objects.create(

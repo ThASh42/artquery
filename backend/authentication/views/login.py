@@ -1,7 +1,6 @@
 from django.contrib.auth import login
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from rest_framework import status
-from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -29,13 +28,24 @@ class LoginView(APIView):
             return Response(
                 serializer.errors, status=status.HTTP_400_BAD_REQUEST
             )
+
         user = serializer.save()
 
-        login(request, user)
+        tokens = serializer.get_tokens(user)
+        response = Response({'data': UserSerializer(user).data, 'token_data': tokens})
 
-        token, created = Token.objects.get_or_create(user=user)
+        response.set_cookie(key="access_token",
+                            value=tokens['access'],
+                            httponly=True,
+                            secure=True,
+                            samesite="Strict",
+                            max_age=60*60)
 
-        return Response({
-            'data': UserSerializer(user).data,
-            'token': token.key,
-        })
+        response.set_cookie(key="refresh_token",
+                            value=tokens['refresh'],
+                            httponly=True,
+                            secure=True,
+                            samesite="Strict",
+                            max_age=60*60*24*30)
+
+        return response
