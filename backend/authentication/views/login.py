@@ -1,5 +1,5 @@
 from django.contrib.auth import login
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -38,12 +38,14 @@ class LoginView(APIView):
                             value=tokens['access'],
                             httponly=True,
                             secure=True,
-                            samesite="None",)
+                            samesite="Strict",
+                            max_age=60*60)
 
         response.set_cookie(key="refresh_token",
                             value=tokens['refresh'],
                             httponly=True,
                             secure=True,
-                            samesite="None",)
+                            samesite="Strict",
+                            max_age=60*60*24*30)
 
         return response

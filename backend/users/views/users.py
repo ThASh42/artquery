@@ -46,13 +46,15 @@ class UserViewSet(viewsets.ModelViewSet):
                             value=tokens['access'],
                             httponly=True,
                             secure=True,
-                            samesite="None",)
+                            samesite="Strict",
+                            max_age=60*60)
 
         response.set_cookie(key="refresh_token",
                             value=tokens['refresh'],
                             httponly=True,
                             secure=True,
-                            samesite="None",)
+                            samesite="Strict",
+                            max_age=60*60*24*30)
 
         if request.accepted_renderer.format == 'html':
             messages.success(request, "Registration successful!")
