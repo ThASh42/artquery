@@ -3,7 +3,7 @@ from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from ..models.users import CustomUser
+from ....models.users import CustomUser
 
 
 class UserSerializer(serializers.ModelSerializer):

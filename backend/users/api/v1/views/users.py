@@ -1,27 +1,34 @@
-from rest_framework import status
+from rest_framework import status, viewsets
+
 from rest_framework.response import Response
-from rest_framework.views import APIView
 
-from backend.users.api.v1.serializers.users import UserSerializer
-
-from ..serializers.login import LoginSerializer
+from ....models import CustomUser
+from ..serializers.users import UserSerializer
 
 
-class LoginAPIView(APIView):
+class UserViewSet(viewsets.ModelViewSet):
+    '''
+    API view for CRUD operations and list/retrieve of users functionality.
+    '''
+    queryset = CustomUser.objects.all()
+    serializer_class = UserSerializer
 
-    def post(self, request):
-        serializer = LoginSerializer(
-            data=request.data, context={'request': request}
-        )
+    def create(self, request):
+        serializer = self.serializer_class(data=request.data)
+
         if not serializer.is_valid():
             return Response(
-                serializer.errors, status=status.HTTP_400_BAD_REQUEST
+                serializer.errors,
+                status=status.HTTP_400_BAD_REQUEST,
             )
 
         user = serializer.save()
 
         tokens = serializer.get_tokens(user)
-        response = Response({'data': UserSerializer(user).data, 'token_data': tokens})
+        response = Response(
+            {'data': UserSerializer(user).data, 'tokens': tokens},
+            status=status.HTTP_201_CREATED,
+        )
 
         response.set_cookie(key="access_token",
                             value=tokens['access'],
