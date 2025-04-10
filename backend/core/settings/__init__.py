@@ -21,6 +21,5 @@ include(
     'rest_framework.py',
     'custom.py',
     optional(LOCAL_SETTINGS_PATH),
-    'envvars.py',
     'docker.py',
 )
