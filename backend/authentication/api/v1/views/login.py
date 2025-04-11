@@ -1,3 +1,4 @@
+from django.contrib.auth import login
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -46,5 +47,7 @@ class LoginAPIView(APIView):
             samesite="Strict",
             max_age=REFRESH_TOKEN_LIFETIME_SECONDS,
         )
+
+        login(request, user)
 
         return response

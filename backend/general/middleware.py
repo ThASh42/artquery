@@ -1,3 +1,4 @@
+from django.contrib.auth import logout
 from django.http import JsonResponse
 from django.utils.deprecation import MiddlewareMixin
 from rest_framework_simplejwt.exceptions import TokenError
@@ -7,7 +8,7 @@ from .constants import ACCESS_TOKEN_LIFETIME_SECONDS
 
 
 class TokenRefreshMiddleware(MiddlewareMixin):
-    """Middleware that automatically refreshes access tokens when expired."""
+    """Middleware for processing authentication logic."""
 
     def __init__(self, get_response):
         self.get_response = get_response
@@ -38,5 +39,8 @@ class TokenRefreshMiddleware(MiddlewareMixin):
                 return JsonResponse(
                     {"error": "Refresh token expired"}, status=401
                 )
+
+        if request.user.is_authenticated:
+            logout(request)
 
         return self.get_response(request)
