@@ -3,6 +3,8 @@ from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenRefreshView
 
+from .....general.constants import ACCESS_TOKEN_LIFETIME_SECONDS
+
 
 class CookieTokenRefreshView(TokenRefreshView):
     def post(self, request):
@@ -30,7 +32,7 @@ class CookieTokenRefreshView(TokenRefreshView):
                 httponly=True,
                 secure=True,
                 samesite="Strict",
-                max_age=60 * 60,
+                max_age=ACCESS_TOKEN_LIFETIME_SECONDS,
             )
             return response
         except Exception as e:
