@@ -1,5 +1,10 @@
 from datetime import timedelta
 
+from ...general.constants import (
+    ACCESS_TOKEN_LIFETIME_SECONDS,
+    REFRESH_TOKEN_LIFETIME_SECONDS,
+)
+
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "backend.authentication.backends.jwt.CookieJWTAuthentication",
@@ -13,8 +18,10 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
-    "REFRESH_TOKEN_LIFETIME": timedelta(days=30),
+    "ACCESS_TOKEN_LIFETIME": timedelta(seconds=ACCESS_TOKEN_LIFETIME_SECONDS),
+    "REFRESH_TOKEN_LIFETIME": timedelta(
+        seconds=REFRESH_TOKEN_LIFETIME_SECONDS
+    ),
     "ROTATE_REFRESH_TOKENS": False,
     "BLACKLIST_AFTER_ROTATION": False,
     "UPDATE_LAST_LOGIN": False,
@@ -35,6 +42,8 @@ SIMPLE_JWT = {
     "TOKEN_USER_CLASS": "rest_framework_simplejwt.models.TokenUser",
     "JTI_CLAIM": "jti",
     "SLIDING_TOKEN_REFRESH_EXP_CLAIM": "refresh_exp",
-    "SLIDING_TOKEN_LIFETIME": timedelta(minutes=60),
-    "SLIDING_TOKEN_REFRESH_LIFETIME": timedelta(days=30),
+    "SLIDING_TOKEN_LIFETIME": timedelta(seconds=ACCESS_TOKEN_LIFETIME_SECONDS),
+    "SLIDING_TOKEN_REFRESH_LIFETIME": timedelta(
+        seconds=REFRESH_TOKEN_LIFETIME_SECONDS
+    ),
 }

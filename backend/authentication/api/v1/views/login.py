@@ -1,9 +1,14 @@
+from django.contrib.auth import login
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from backend.users.api.v1.serializers.users import UserSerializer
 
+from .....general.constants import (
+    ACCESS_TOKEN_LIFETIME_SECONDS,
+    REFRESH_TOKEN_LIFETIME_SECONDS,
+)
 from ..serializers.login import LoginSerializer
 
 
@@ -31,7 +36,7 @@ class LoginAPIView(APIView):
             httponly=True,
             secure=True,
             samesite="Strict",
-            max_age=60 * 60,
+            max_age=ACCESS_TOKEN_LIFETIME_SECONDS,
         )
 
         response.set_cookie(
@@ -40,7 +45,9 @@ class LoginAPIView(APIView):
             httponly=True,
             secure=True,
             samesite="Strict",
-            max_age=60 * 60 * 24 * 30,
+            max_age=REFRESH_TOKEN_LIFETIME_SECONDS,
         )
+
+        login(request, user)
 
         return response

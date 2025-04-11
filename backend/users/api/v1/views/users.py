@@ -1,6 +1,11 @@
+from django.contrib.auth import login
 from rest_framework import status, viewsets
 from rest_framework.response import Response
 
+from .....general.constants import (
+    ACCESS_TOKEN_LIFETIME_SECONDS,
+    REFRESH_TOKEN_LIFETIME_SECONDS,
+)
 from ....models import CustomUser
 from ..serializers.users import UserSerializer
 
@@ -36,7 +41,7 @@ class UserViewSet(viewsets.ModelViewSet):
             httponly=True,
             secure=True,
             samesite="Strict",
-            max_age=60 * 60,
+            max_age=ACCESS_TOKEN_LIFETIME_SECONDS,
         )
 
         response.set_cookie(
@@ -45,7 +50,9 @@ class UserViewSet(viewsets.ModelViewSet):
             httponly=True,
             secure=True,
             samesite="Strict",
-            max_age=60 * 60 * 24 * 30,
+            max_age=REFRESH_TOKEN_LIFETIME_SECONDS,
         )
+
+        login(request, user)
 
         return response
