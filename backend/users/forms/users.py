@@ -4,23 +4,21 @@ from django.utils.translation import gettext_lazy as _
 
 from backend.users.models import CustomUser
 
-DEFAULT_ATTRS = {'class': 'form-control width-300'}
+DEFAULT_ATTRS = {"class": "form-control width-300"}
 
 
 class CustomUserCreationForm(UserCreationForm):
 
     username = forms.CharField(
         widget=forms.TextInput(
-            attrs={
-                **DEFAULT_ATTRS, 'placeholder': _('Your username..')
-            }
+            attrs={**DEFAULT_ATTRS, "placeholder": _("Your username..")}
         ),
     )
     email = forms.EmailField(
         widget=forms.EmailInput(
             attrs={
                 **DEFAULT_ATTRS,
-                'placeholder': _('Email adress..'),
+                "placeholder": _("Email adress.."),
             }
         ),
     )
@@ -35,7 +33,7 @@ class CustomUserCreationForm(UserCreationForm):
         widget=forms.TextInput(
             attrs={
                 **DEFAULT_ATTRS,
-                'placeholder': _('First name..'),
+                "placeholder": _("First name.."),
             }
         ),
     )
@@ -44,7 +42,7 @@ class CustomUserCreationForm(UserCreationForm):
         widget=forms.TextInput(
             attrs={
                 **DEFAULT_ATTRS,
-                'placeholder': _('Last name..'),
+                "placeholder": _("Last name.."),
             }
         ),
     )
@@ -52,12 +50,12 @@ class CustomUserCreationForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
         model = CustomUser
         fields = (
-            'username',
-            'email',
-            'password1',
-            'password2',
-            'first_name',
-            'last_name',
+            "username",
+            "email",
+            "password1",
+            "password2",
+            "first_name",
+            "last_name",
         )
 
     def __init__(self, *args, **kwargs):

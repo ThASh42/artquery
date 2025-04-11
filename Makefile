@@ -14,6 +14,10 @@ install-pre-commit:
 lint:
 	poetry run pre-commit run --all-files
 
+.PHONY: black
+black:
+	poetry run black .
+
 .PHONY: lock
 lock:
 	poetry lock
@@ -32,7 +36,11 @@ runserver:
 
 .PHONY: shell
 shell:
-	poetry run python -m thenewboston.manage shell
+	poetry run python -m backend.manage shell
+
+.PHONY: py python
+py python:
+	poetry run python
 
 .PHONY: dbshell
 dbshell:

@@ -11,7 +11,7 @@ class LoginAPIView(APIView):
 
     def post(self, request):
         serializer = LoginSerializer(
-            data=request.data, context={'request': request}
+            data=request.data, context={"request": request}
         )
         if not serializer.is_valid():
             return Response(
@@ -21,20 +21,26 @@ class LoginAPIView(APIView):
         user = serializer.save()
 
         tokens = serializer.get_tokens(user)
-        response = Response({'data': UserSerializer(user).data, 'token_data': tokens})
+        response = Response(
+            {"data": UserSerializer(user).data, "token_data": tokens}
+        )
 
-        response.set_cookie(key="access_token",
-                            value=tokens['access'],
-                            httponly=True,
-                            secure=True,
-                            samesite="Strict",
-                            max_age=60*60)
+        response.set_cookie(
+            key="access_token",
+            value=tokens["access"],
+            httponly=True,
+            secure=True,
+            samesite="Strict",
+            max_age=60 * 60,
+        )
 
-        response.set_cookie(key="refresh_token",
-                            value=tokens['refresh'],
-                            httponly=True,
-                            secure=True,
-                            samesite="Strict",
-                            max_age=60*60*24*30)
+        response.set_cookie(
+            key="refresh_token",
+            value=tokens["refresh"],
+            httponly=True,
+            secure=True,
+            samesite="Strict",
+            max_age=60 * 60 * 24 * 30,
+        )
 
         return response

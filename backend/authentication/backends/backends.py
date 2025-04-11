@@ -5,9 +5,9 @@ from django.core.validators import EmailValidator
 
 
 class EmailBackend(ModelBackend):
-    '''
+    """
     Email and username must be unique values for the user model
-    '''
+    """
 
     def authenticate(self, request, username=None, password=None, **kwargs):
         UserModel = get_user_model()

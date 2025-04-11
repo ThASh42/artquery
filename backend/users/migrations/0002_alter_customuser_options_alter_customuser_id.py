@@ -8,22 +8,22 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('users', '0001_initial'),
+        ("users", "0001_initial"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='customuser',
-            options={'verbose_name_plural': 'Users'},
+            name="customuser",
+            options={"verbose_name_plural": "Users"},
         ),
         migrations.AlterField(
-            model_name='customuser',
-            name='id',
+            model_name="customuser",
+            name="id",
             field=models.UUIDField(
                 default=uuid.uuid4,
                 editable=False,
                 primary_key=True,
-                serialize=False
+                serialize=False,
             ),
         ),
     ]

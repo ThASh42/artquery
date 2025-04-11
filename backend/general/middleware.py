@@ -1,9 +1,7 @@
 from django.http import JsonResponse
-from rest_framework_simplejwt.tokens import RefreshToken
+from django.utils.deprecation import MiddlewareMixin
 from rest_framework_simplejwt.exceptions import TokenError
 from rest_framework_simplejwt.tokens import RefreshToken
-from django.http import JsonResponse
-from django.utils.deprecation import MiddlewareMixin
 
 
 class TokenRefreshMiddleware(MiddlewareMixin):
@@ -13,8 +11,8 @@ class TokenRefreshMiddleware(MiddlewareMixin):
         self.get_response = get_response
 
     def __call__(self, request):
-        access_token = request.COOKIES.get('access_token')
-        refresh_token = request.COOKIES.get('refresh_token')
+        access_token = request.COOKIES.get("access_token")
+        refresh_token = request.COOKIES.get("refresh_token")
 
         if access_token:
             return self.get_response(request)
@@ -25,15 +23,18 @@ class TokenRefreshMiddleware(MiddlewareMixin):
                 response = self.get_response(request)
 
                 response.set_cookie(
-                    key='access_token',
+                    key="access_token",
                     value=new_access_token,
                     httponly=True,
                     secure=True,
-                    samesite='Strict',
-                    max_age=60*60)
+                    samesite="Strict",
+                    max_age=60 * 60,
+                )
                 return response
 
             except TokenError:
-                return JsonResponse({'error': 'Refresh token expired'}, status=401)
+                return JsonResponse(
+                    {"error": "Refresh token expired"}, status=401
+                )
 
         return self.get_response(request)
