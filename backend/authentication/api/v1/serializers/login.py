@@ -23,26 +23,23 @@ class LoginSerializer(serializers.Serializer):
         user = authenticate(**attrs)
 
         if not user:
-            raise serializers.ValidationError({
-                "non_field_errors": [_("Invalid email or password.")]
-            })
+            raise serializers.ValidationError(
+                {"non_field_errors": [_("Invalid email or password.")]}
+            )
         if not user.is_active:
-            raise serializers.ValidationError({
-                "non_field_errors": [_("This account is inactive.")]
-            })
+            raise serializers.ValidationError(
+                {"non_field_errors": [_("This account is inactive.")]}
+            )
 
-        attrs['user'] = user
+        attrs["user"] = user
         return attrs
 
     def get_tokens(self, user):
         tokens = RefreshToken.for_user(user)
         refresh = str(tokens)
         access = str(tokens.access_token)
-        data = {
-            "refresh": refresh,
-            "access": access
-        }
+        data = {"refresh": refresh, "access": access}
         return data
 
     def create(self, validated_data):
-        return validated_data['user']
+        return validated_data["user"]

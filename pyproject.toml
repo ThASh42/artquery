@@ -6,6 +6,7 @@ authors = ["ThASh42 <thashmail42@gmail.com>"]
 license = "MIT"
 readme = "README.md"
 packages = [{include = "artquery"}]
+package-mode = false
 
 [tool.poetry.dependencies]
 python = "^3.12"
@@ -28,18 +29,22 @@ pydantic = "^2.9.2"
 pynacl = "^1.5.0"
 coverage = "^7.6.4"
 djangorestframework-simplejwt = "^5.5.0"
+black = "^25.1.0"
+poetry-auto-export = "^0.4.0"
+
+[tool.black]
+line-length = 79
 
 [tool.isort]
+profile = "black"
 multi_line_output = 5
 line_length = 79
-
-[tool.yapf]
-based_on_style = "google"
-align_closing_bracket_with_visual_indent = true
-coalesce_brackets = true
-column_limit = 79
-dedent_closing_brackets = true
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.poetry-auto-export]
+output = "requirements.txt"
+without_hashes = true
+without = ["dev"]
