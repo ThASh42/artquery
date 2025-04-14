@@ -1,4 +1,5 @@
 from django.contrib.auth.password_validation import validate_password
+from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -8,33 +9,47 @@ from ....models.users import CustomUser
 
 class UserSerializer(serializers.ModelSerializer):
     username = serializers.CharField(
+        label=_("Username"),
         required=True,
+        max_length=150,
         validators=[UniqueValidator(queryset=CustomUser.objects.all())],
     )
+    first_name = serializers.CharField(
+        label=_("First Name"),
+        required=False,
+        max_length=150,
+    )
+    last_name = serializers.CharField(
+        label=_("Last Name"),
+        required=False,
+        max_length=150,
+    )
     email = serializers.EmailField(
+        label=_("Email"),
         required=True,
+        max_length=254,
         validators=[UniqueValidator(queryset=CustomUser.objects.all())],
     )
     password1 = serializers.CharField(
+        label=_("Password"),
         write_only=True,
         required=True,
         validators=[validate_password],
-        style={"input_type": "password"},
     )
     password2 = serializers.CharField(
+        label=_("Confirm password"),
         write_only=True,
         required=True,
-        style={"input_type": "password"},
     )
 
     class Meta:
         model = CustomUser
         fields = (
             "id",
-            "password1",
-            "password2",
             "username",
             "email",
+            "password1",
+            "password2",
             "first_name",
             "last_name",
         )
@@ -58,8 +73,8 @@ class UserSerializer(serializers.ModelSerializer):
         user = CustomUser.objects.create(
             username=validated_data["username"],
             email=validated_data["email"],
-            first_name=validated_data["first_name"],
-            last_name=validated_data["last_name"],
+            first_name=validated_data.get("first_name", ""),
+            last_name=validated_data.get("last_name", ""),
         )
 
         user.set_password(validated_data["password1"])
