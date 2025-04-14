@@ -13,6 +13,6 @@ accept-encodings = utf-8
 per-file-ignores =
     */__init__.py: F401,
     backend/core/settings/templates/settings.dev.py:F821,E501
-    backend/core/settings/*.py:E501
+    backend/core/settings/*.py:E501, F821
     backend/manage.py:E501,
     */admin.py: F401,
