@@ -92,3 +92,7 @@ AUTHENTICATION_BACKENDS = [
 
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
+
+STATICFILES_DIRS = [
+    BASE_DIR / "backend" / "static",  # type: ignore
+]
